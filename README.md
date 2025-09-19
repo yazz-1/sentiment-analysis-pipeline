@@ -97,3 +97,10 @@ Dejo aquí el [enlace](https://public.tableau.com/views/AnlisisdeReseasenIMDB/Da
 - Añadir comparativa entre modelos clásicos y de deep learning.  
 - Publicar artículos en blog con explicaciones matemáticas detalladas.  
 - Versión multilingüe de este README (Español, Inglés, Francés, Ruso).
+
+---
+
+## 🙏 Créditos
+
+Este proyecto utiliza el dataset **[ACL IMDb](https://ai.stanford.edu/~amaas/data/sentiment/)**, creado por Andrew Maas y colaboradores en la Universidad de Stanford. Agradecemos al equipo de investigación por hacer posible el acceso a estos datos para fines educativos y de investigación.
+
