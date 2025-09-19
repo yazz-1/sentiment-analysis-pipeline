@@ -1,0 +1,7 @@
+pandas
+scikit-learn
+spacy
+matplotlib
+seaborn
+wordcloud
+joblib
