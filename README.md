@@ -87,7 +87,7 @@ Dejo aquí el [enlace](https://public.tableau.com/views/AnlisisdeReseasenIMDB/Da
    ```bash
    python -m spacy download en_core_web_sm
    ```  
-4. Descargar el dataset y mover la carpeta 'aclImdb' a la carpeta 'analisis_sentimientos_imdb'
+4. Descargar el dataset y mover la carpeta 'aclImdb' a la carpeta 'analisis_sentimientos_imdb'.
 5. Ejecutar los scripts en orden numérico.  
 6. Revisar resultados en la carpeta `output/`.
 
