@@ -105,3 +105,15 @@ Dejo aquí el [enlace](https://public.tableau.com/views/AnlisisdeReseasenIMDB/Da
 
 Este proyecto utiliza el dataset **[ACL IMDb](https://ai.stanford.edu/~amaas/data/sentiment/)**, creado por Andrew Maas y colaboradores en la Universidad de Stanford. Agradecemos al equipo de investigación por hacer posible el acceso a estos datos para fines educativos y de investigación.
 
+```bibtex
+@InProceedings{maas-EtAl:2011:ACL-HLT2011,
+  author    = {Maas, Andrew L. and Daly, Raymond E. and Pham, Peter T. and Huang, Dan and Ng, Andrew Y. and Potts, Christopher},
+  title     = {Learning Word Vectors for Sentiment Analysis},
+  booktitle = {Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies},
+  month     = {June},
+  year      = {2011},
+  address   = {Portland, Oregon, USA},
+  publisher = {Association for Computational Linguistics},
+  pages     = {142--150},
+  url       = {http://www.aclweb.org/anthology/P11-1015}
+}
