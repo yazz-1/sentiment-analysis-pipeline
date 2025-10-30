@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Sentimientos - IMDB Reviews</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h1 class="text-white display-4 fw-bold mb-3">
+                        <i class="fas fa-film me-3"></i>Análisis de Sentimientos
+                    </h1>
+                    <p class="text-white-50 lead">Analiza reseñas de películas usando Machine Learning</p>
+                </div>
+
+                <!-- Alerta de Idioma -->
+                <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+                    <i class="fas fa-language me-2"></i>
+                    <strong>Importante:</strong> El modelo fue entrenado con reseñas en inglés.
+                    Para obtener resultados precisos, por favor escribe tu reseña en inglés.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <!-- Main Card -->
+                <div class="card">
+                    <div class="card-body p-4">
+                        <!-- Formulario -->
+                        <form action="/analyze" method="POST">
+                            <div class="mb-4">
+                                <label for="review_text" class="form-label fw-semibold">
+                                    <i class="fas fa-pencil-alt me-2"></i>Escribe tu reseña (en inglés):
+                                </label>
+                                <textarea
+                                    class="form-control"
+                                    id="review_text"
+                                    name="review_text"
+                                    rows="5"
+                                    placeholder="Ej: This movie was absolutely incredible! I loved the acting and the plot..."
+                                    required>{{ review_text if review_text }}</textarea>
+                                <div class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Recuerda escribir en inglés para obtener resultados precisos.
+                                </div>
+                            </div>
+
+                            <!-- Ejemplos Rápidos en Español (SOLO POSITIVO Y NEGATIVO) -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="fas fa-lightbulb me-2"></i>Ejemplos rápidos (en inglés):
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <div class="example-review p-3 rounded" onclick="setExample('This movie is absolutely fantastic! Great acting and an engaging plot that kept me hooked until the end. The characters were well-developed and the story was original.')">
+                                            <small class="text-muted">😊 Positivo</small>
+                                            <div class="fw-medium">"Fantástica actuación y trama envolvente..."</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="example-review p-3 rounded" onclick="setExample('Terrible movie, complete waste of time. Poor acting and a boring story that never gets interesting. I would not recommend this to anyone.')">
+                                            <small class="text-muted">😞 Negativo</small>
+                                            <div class="fw-medium">"Terrible pérdida de tiempo, no lo recomiendo..."</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-text text-muted mt-2">
+                                    <i class="fas fa-mouse-pointer me-1"></i>
+                                    Haz clic en cualquier ejemplo para probarlo.
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-robot me-2"></i>Analizar Sentimiento
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Resultados -->
+                        {% if result and result.status == 'success' %}
+                            <div class="mt-5 p-4 rounded sentiment-{{ sentiment_color }}">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h3 class="fw-bold mb-3">
+                                            {{ sentiment_emoji }} Sentimiento: {{ sentiment_text }}
+                                        </h3>
+
+                                        <!-- Barra de Probabilidades -->
+                                        <div class="mb-4">
+                                            <p class="mb-2"><strong>Probabilidades:</strong></p>
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <div class="d-flex justify-content-between mb-1">
+                                                        <small>Positivo: {{ result.probability_pos }}%</small>
+                                                        <small>Negativo: {{ result.probability_neg }}%</small>
+                                                    </div>
+                                                    <div class="progress" style="height: 25px;">
+                                                        <div class="progress-bar bg-success"
+                                                             style="width: {{ result.probability_pos }}%">
+                                                            {{ result.probability_pos }}%
+                                                        </div>
+                                                        <div class="progress-bar bg-danger"
+                                                             style="width: {{ result.probability_neg }}%">
+                                                            {{ result.probability_neg }}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <p class="mb-1"><strong>Reseña analizada:</strong></p>
+                                        <p class="fst-italic">"{{ review_text }}"</p>
+
+                                        <!-- Información del Modelo -->
+                                        <div class="mt-3 pt-3 border-top">
+                                            <small class="text-muted">
+                                                <i class="fas fa-brain me-1"></i>
+                                                Conjunto de datos: 50,000 reseñas IMDB (25k entrenamiento + 25k prueba)
+                                            </small>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted">
+                                                <strong>Precisión:</strong> ~85-90%
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="display-1">
+                                            {{ sentiment_emoji }}
+                                        </div>
+                                        <div class="mt-3">
+                                            {% if sentiment_text == 'POSITIVO' %}
+                                                <span class="badge bg-success fs-6 p-3">
+                                                    {{ result.probability_pos }}% Probabilidad
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-danger fs-6 p-3">
+                                                    {{ result.probability_neg }}% Probabilidad
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Mensaje de Error -->
+                        {% if error %}
+                            <div class="mt-4 alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                {{ error }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endif %}
+
+                        <!-- Error del resultado -->
+                        {% if result and result.status == 'error' %}
+                            <div class="mt-4 alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Error en el análisis: {{ result.error }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Información del Modelo -->
+                <div class="text-center mt-4">
+                    <small class="text-white-50">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <a href="/health" class="text-white-50 text-decoration-none">Estado del API</a> |
+                        <a href="/predict" class="text-white-50 text-decoration-none">API JSON</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function setExample(text) {
+            document.getElementById('review_text').value = text;
+            document.getElementById('review_text').focus();
+
+            // Scroll suave al campo de texto
+            document.getElementById('review_text').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        // Animación para las barras de progreso
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                // Reiniciar animación
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

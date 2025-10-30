@@ -1,0 +1,33 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  sentiment-api:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./models:/app/models  # Montar modelos desde host
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  sentiment-api-dev:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.dev
+    ports:
+      - "8001:8000"
+    environment:
+      - PYTHONPATH=/app
+      - FLASK_DEBUG=1
+    volumes:
+      - .:/app  # Montar todo el código para desarrollo
+      - ./models:/app/models
+    command: python -m deployment.app

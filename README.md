@@ -1,119 +1,149 @@
-# 🎬 Análisis de sentimientos en reseñas de IMDb
+# 🧠 Análisis de sentimientos en reseñas de IMDb
 
-## 📌 Descripción
-Este proyecto implementa un pipeline completo de **Procesamiento de Lenguaje Natural (PLN)** y **Machine Learning** para analizar reseñas de películas extraídas de IMDb.  
-El objetivo es clasificar automáticamente las reseñas como **positivas** o **negativas**, a partir del texto, empleando técnicas estadísticas y de aprendizaje supervisado.
+Este proyecto implementa un **pipeline completo de Procesamiento de Lenguaje Natural (PLN)** y **Machine Learning** para analizar reseñas de películas extraídas de IMDb.  
+El objetivo es **clasificar automáticamente las reseñas como positivas o negativas** a partir del texto, empleando técnicas estadísticas y de aprendizaje supervisado.
 
 ---
 
-## 🗂️ Estructura del proyecto
+## ⚙️ Instalación y requisitos
+
+### 🔹 Requisitos previos
+- Python **3.9 o superior**
+- pip actualizado (`python -m pip install --upgrade pip`)
+- Entorno virtual recomendado (`venv` o `conda`)
+
+### 🔹 Clonar el repositorio
+
+```bash
+git clone https://github.com/<TU_USUARIO>/imdb-sentiment-analysis.git
+cd imdb-sentiment-analysis
+```
+
+### 🔹 Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### 🔹 Descargar modelo de spaCy
+
+```bash
+python -m spacy download en_core_web_sm
+```
+
+---
+
+## 🚀 Ejecución y uso
+
+### 🔸 1. Preprocesamiento y modelado
+
+Ejecuta el pipeline principal (entrenamiento y evaluación del modelo):
+
+```bash
+python src/modeling_04.py
+```
+
+Los resultados (métricas, curvas ROC, matriz de confusión y CSVs de salida) se guardarán automáticamente en la carpeta `output/`.
+
+### 🔸 2. Visualización de resultados
+
+Para generar las visualizaciones y tablas de apoyo:
+
+```bash
+python src/visualization_06.py
+```
+
+Esto creará:
+- `prediction_distribution.png`  
+- `probability_histogram.png`  
+- `wordcloud_positive.png`  
+- `wordcloud_negative.png`  
+- `word_freq_for_tableau.csv`
+
+en la carpeta `output/`.
+
+### 🔸 3. Webapp local
+
+El proyecto incluye una **webapp simple** para probar el modelo de manera interactiva.
+
+Desde la raíz del proyecto:
+
+```bash
+python deployment/app.py
+```
+
+Luego abre tu navegador en:
 
 ```
-├── data/                # Datos originales y preprocesados
-├── models/              # Modelos entrenados
-├── output/              # Resultados, gráficos y modelos entrenados
-├── 01_make_csv.py       # Creación CSVs a partir del conjunto original
-├── 02_preprocessing.py  # Limpieza y preprocesamiento de texto
-├── 03_eda.py            # Análisis exploratorio de datos
-├── 04_modeling.py       # Entrenamiento y evaluación de modelos
-├── 05_inference.py      # Inferencia sobre nuevos textos
-├── 06_visualization.py  # Visualización de resultados
+http://127.0.0.1:8000
+```
+
+Desde allí podrás introducir reseñas y obtener la predicción en tiempo real.
+
+<p align="center">
+  <img src="img/webapp_home.png" alt="Inicio" width="400">
+  <img src="img/webapp_result.png" alt="Resultado" width="400">
+</p>
+
+---
+
+## 📊 Resultados y Dashboard
+
+Los resultados del modelo incluyen:
+- **Matriz de confusión normalizada**
+- **Curva ROC y AUC**
+- **Distribución de predicciones**
+- **Nubes de palabras** de reseñas positivas y negativas
+
+Además, se ha creado un **dashboard interactivo** en Tableau Public para la exploración visual de los resultados.
+
+👉 [Ver Dashboard en Tableau Public](https://public.tableau.com/views/AnlisisdeReseasenIMDB/Dashboard1?:language=es-ES&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
+
+---
+
+## 🧩 Estructura del proyecto
+
+```
+.
+├── data/                  # Datos originales y preprocesados
+├── deployment/            # Webapp (app.py)
+├── models/                # Modelos y pipelines entrenados
+├── output/                # Resultados, métricas y visualizaciones
+├── src/                   # Scripts principales del pipeline
+│   ├── preprocessing_02.py
+│   ├── modeling_04.py
+│   └── visualization_06.py
+├── tests/                 # Pruebas unitarias
+├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
 ---
 
-## ⚙️ Tecnologías utilizadas
-- **Python** (pandas, scikit-learn, spaCy, seaborn, matplotlib, joblib)  
-- **Tableau** (para visualización interactiva)  
-- **GitHub** (control de versiones y publicación)
+## 🧠 Tecnologías utilizadas
+
+- **Python 3.9+**
+- **spaCy** – Tokenización y lematización  
+- **scikit-learn** – Modelado y evaluación  
+- **pandas**, **numpy** – Manipulación de datos  
+- **seaborn**, **matplotlib**, **wordcloud** – Visualización  
+- **Flask** – Webapp interactiva  
+- **Tableau Public** – Visualización de resultados  
 
 ---
 
-## 📊 Metodología
+## 📚 Licencia y dataset
 
-1. **Crear archivos CSV**: reseñas en formato CSV.  
-2. **Preprocesamiento**:  
-   - Normalización de texto (minúsculas, eliminación de puntuación).  
-   - Lematización con spaCy.  
-   - Eliminación de stopwords.  
-3. **Vectorización**: representación numérica mediante **TF-IDF**.  
-4. **Modelado**:  
-   - Entrenamiento con **Regresión Logística**.  
-   - Evaluación con métricas: Accuracy, Precisión, Recall, F1-score, AUC.  
-   - Matriz de confusión normalizada y curva ROC.  
-5. **Inferencia**: aplicación del modelo entrenado sobre nuevos textos.  
-6. **Visualización**: histogramas, distribución de clases, nubes de palabras. También generamos archivos CSV para Tableau.
+Este proyecto utiliza el dataset **IMDb Large Movie Review Dataset** introducido por **Maas et al. (2011)**.  
+Por favor, cite el trabajo original si reutiliza el dataset o los resultados asociados.
 
----
+> **Referencia obligatoria:**
+>
+> Maas, Andrew L., Daly, Raymond E., Pham, Peter T., Huang, Dan, Ng, Andrew Y., and Potts, Christopher.  
+> *Learning Word Vectors for Sentiment Analysis.*  
+> Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies (ACL-HLT 2011), Portland, Oregon, USA.  
+> pp. 142–150.  
+> [http://www.aclweb.org/anthology/P11-1015](http://www.aclweb.org/anthology/P11-1015)
 
-## 📐 Relación con inferencia estadística
-
-Este proyecto no solo aplica técnicas de machine learning, sino que también conecta con fundamentos de **inferencia estadística**:  
-
-- **TF-IDF** como estimación de parámetros (frecuencias relativas ajustadas).  
-- **División train/test** como análogo a estimar el error poblacional mediante muestras independientes.  
-- **Regresión logística** basada en máxima verosimilitud para modelar probabilidades.  
-- **Matriz de confusión y métricas** como estimadores de proporciones, con interpretación similar a intervalos de confianza.  
-- **Curvas ROC/AUC** vinculadas a los errores tipo I y II en contrastes de hipótesis.
-
-👉 Próximamente añadiré enlaces a entradas de blog donde se explican estos conceptos con mayor detalle y formalismo matemático.
-
----
-
-## 📂 Resultados
-
-- **Modelo entrenado** guardado con `joblib`.  
-- **Vectorizador TF-IDF** reutilizable.  
-- **Gráficos**: distribución de clases, histograma de probabilidades, nubes de palabras.  
-- **Archivos para Tableau** listos para dashboards interactivos.
-
-Dejo aquí el [enlace](https://public.tableau.com/views/AnlisisdeReseasenIMDB/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link) a un dashboard que he creado en Tableau Public a partir de los CSV generados.
-
----
-
-## 🚀 Cómo usarlo
-
-1. Clonar el repositorio  
-   ```bash
-   git clone https://github.com/tu_usuario/analisis_sentimientos_imdb.git
-   cd analisis_sentimientos_imdb
-   ```  
-2. Instalar dependencias  
-   ```bash
-   pip install -r requirements.txt
-   ```  
-3. Descargar el modelo de spaCy en inglés  
-   ```bash
-   python -m spacy download en_core_web_sm
-   ```  
-4. Descargar el dataset y mover la carpeta 'aclImdb' a la carpeta 'analisis_sentimientos_imdb'.
-5. Ejecutar los scripts en orden numérico.  
-6. Revisar resultados en la carpeta `output/`.
-
----
-
-## 📌 Próximos pasos
-- Explorar representaciones con **embeddings** (Word2Vec, GloVe, BERT), otros modelos (SVM) y distintos valores de los hiperparámetros para comparar resultados.
-- Añadir comparativa entre modelos clásicos y de deep learning.  
-- Publicar artículos en blog con explicaciones matemáticas detalladas.  
-- Versión multilingüe de este README (Español, Inglés, Francés, Ruso).
-
----
-
-## 🙏 Créditos
-
-Este proyecto utiliza el dataset **[ACL IMDb](https://ai.stanford.edu/~amaas/data/sentiment/)**, creado por Andrew Maas y colaboradores en la Universidad de Stanford. Agradecemos al equipo de investigación por hacer posible el acceso a estos datos para fines educativos y de investigación.
-
-```bibtex
-@InProceedings{maas-EtAl:2011:ACL-HLT2011,
-  author    = {Maas, Andrew L. and Daly, Raymond E. and Pham, Peter T. and Huang, Dan and Ng, Andrew Y. and Potts, Christopher},
-  title     = {Learning Word Vectors for Sentiment Analysis},
-  booktitle = {Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies},
-  month     = {June},
-  year      = {2011},
-  address   = {Portland, Oregon, USA},
-  publisher = {Association for Computational Linguistics},
-  pages     = {142--150},
-  url       = {http://www.aclweb.org/anthology/P11-1015}
-}
+Este dataset se distribuye únicamente con fines **educativos y de investigación**.

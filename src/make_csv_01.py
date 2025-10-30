@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-DATA_DIR = "aclImdb"
+DATA_DIR = "data/raw/aclImdb"
 REVIEWS_FILE = "data/imdb_reviews.csv"
 NEW_REVIEWS_FILE = "data/new_reviews.csv"
 
