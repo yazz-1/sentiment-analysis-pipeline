@@ -11,5 +11,10 @@ numpy==2.3.4
 scipy==1.16.3
 joblib==1.5.2
 
+# Visualization
+matplotlib==3.10.7
+seaborn==0.13.2
+wordcloud==1.9.4
+
 # NLP
 spacy==3.8.7

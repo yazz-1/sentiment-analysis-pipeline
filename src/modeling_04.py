@@ -104,7 +104,7 @@ def evaluate(pipeline, X_test, y_test, output_dir):
 def save_results(pipeline, metrics, output_dir, model_dir):
     # Guardado del modelo, vectorizador y métricas
     os.makedirs(output_dir, exist_ok=True)
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(model_dir, exist_ok=True)
 
     joblib.dump(pipeline, f"{model_dir}/pipeline.joblib")
 
@@ -112,7 +112,7 @@ def save_results(pipeline, metrics, output_dir, model_dir):
     metrics_df = pd.DataFrame(list(metrics.items()), columns=["metric", "value"])
     metrics_df.to_csv(os.path.join(output_dir, "metrics_for_tableau.csv"), index=False)
 
-    print(f"\n✅ Modelo y vectorizador guardados en {model_dir}/")
+    print(f"\n✅ Pipeline guardada en {model_dir}/")
     print(f"\n✅ Métricas y curva ROC guardadas en {output_dir}/")
 
 if __name__ == '__main__':

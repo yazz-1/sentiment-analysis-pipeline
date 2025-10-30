@@ -12,5 +12,5 @@ wordcloud==1.9.4
 requests==2.32.5
 
 # Code quality
-black==23.0.0
+black>=23.0.0
 flake8==6.0.0
