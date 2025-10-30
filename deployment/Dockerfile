@@ -28,8 +28,7 @@ RUN python -m spacy download en_core_web_sm
 # Copy application code
 COPY src/ ./src/
 COPY models/ ./models/
-COPY templates/ ./templates/
-COPY static/ ./static/
+COPY deployment/ ./deployment/
 
 # Create non-root user for security
 RUN useradd --create-home --shell /bin/bash appuser && \
