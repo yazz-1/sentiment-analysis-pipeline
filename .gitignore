@@ -12,7 +12,6 @@ myenv/
 # Data and outputs
 data/
 output/
-models/
 *.h5
 *.pkl
 *.joblib
